@@ -10,7 +10,6 @@ import io.hypersistence.utils.test.transaction.*;
 import jakarta.persistence.*;
 import jakarta.persistence.spi.ClassTransformer;
 import jakarta.persistence.spi.PersistenceUnitInfo;
-import jakarta.persistence.spi.PersistenceUnitTransactionType;
 import net.ttddyy.dsproxy.listener.ChainListener;
 import net.ttddyy.dsproxy.listener.DataSourceQueryCountListener;
 import net.ttddyy.dsproxy.listener.logging.SLF4JQueryLoggingListener;
@@ -794,5 +793,15 @@ public abstract class AbstractHibernateTest {
         public List<String> getQualifierAnnotationNames() {
             return List.of();
         }
+
+		@Override
+		public List<String> getAllClassNames() {
+			return managedClassNames;
+		}
+
+		@Override
+		public FetchType getDefaultToOneFetchType() {
+			return FetchType.DEFAULT;
+		}
     }
 }
