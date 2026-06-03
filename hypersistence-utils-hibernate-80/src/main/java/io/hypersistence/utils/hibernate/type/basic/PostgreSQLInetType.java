@@ -5,6 +5,7 @@ import io.hypersistence.utils.hibernate.type.util.Configuration;
 import io.hypersistence.utils.common.ReflectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,13 +39,13 @@ public class PostgreSQLInetType extends ImmutableType<Inet> {
     }
 
     @Override
-    public Inet get(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+    public Inet get(ResultSet rs, int position, WrapperOptions options) throws SQLException {
         String ip = rs.getString(position);
         return (ip != null) ? new Inet(ip) : null;
     }
 
     @Override
-    public void set(PreparedStatement st, Inet value, int index, SharedSessionContractImplementor session) throws SQLException {
+    public void set(PreparedStatement st, Inet value, int index, WrapperOptions options) throws SQLException {
         if (value == null) {
             st.setNull(index, Types.OTHER);
         } else {

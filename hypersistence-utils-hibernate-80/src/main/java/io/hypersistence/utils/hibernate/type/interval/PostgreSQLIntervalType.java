@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.ImmutableType;
 import io.hypersistence.utils.hibernate.type.util.Configuration;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.postgresql.util.PGInterval;
 
 import java.sql.PreparedStatement;
@@ -37,7 +38,7 @@ public class PostgreSQLIntervalType extends ImmutableType<Duration> {
     }
 
     @Override
-    protected Duration get(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+    protected Duration get(ResultSet rs, int position, WrapperOptions options) throws SQLException {
         final PGInterval interval = (PGInterval) rs.getObject(position);
 
         if (interval == null) {
@@ -58,7 +59,7 @@ public class PostgreSQLIntervalType extends ImmutableType<Duration> {
     }
 
     @Override
-    protected void set(PreparedStatement st, Duration value, int index, SharedSessionContractImplementor session) throws SQLException {
+    protected void set(PreparedStatement st, Duration value, int index, WrapperOptions options) throws SQLException {
         if (value == null) {
             st.setNull(index, Types.OTHER);
         } else {

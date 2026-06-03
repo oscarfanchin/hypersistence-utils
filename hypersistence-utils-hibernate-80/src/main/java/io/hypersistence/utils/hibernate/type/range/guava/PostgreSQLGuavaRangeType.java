@@ -7,6 +7,7 @@ import io.hypersistence.utils.common.ReflectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.models.internal.jdk.JdkFieldDetails;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.usertype.DynamicParameterizedType;
 
 import java.lang.reflect.ParameterizedType;
@@ -117,7 +118,7 @@ public class PostgreSQLGuavaRangeType extends ImmutableType<Range> implements Dy
     }
 
     @Override
-    protected Range get(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+    protected Range get(ResultSet rs, int position, WrapperOptions options) throws SQLException {
         Object pgObject = rs.getObject(position);
 
         if (pgObject == null) {
@@ -148,7 +149,7 @@ public class PostgreSQLGuavaRangeType extends ImmutableType<Range> implements Dy
     }
 
     @Override
-    protected void set(PreparedStatement st, Range range, int index, SharedSessionContractImplementor session) throws SQLException {
+    protected void set(PreparedStatement st, Range range, int index, WrapperOptions options) throws SQLException {
         if (range == null) {
             st.setNull(index, Types.OTHER);
         } else {

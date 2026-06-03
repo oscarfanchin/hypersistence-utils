@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.ImmutableType;
 import io.hypersistence.utils.hibernate.type.util.Configuration;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -35,13 +36,13 @@ public class PostgreSQLLTreeType extends ImmutableType<String> {
     }
 
     @Override
-    protected String get(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+    protected String get(ResultSet rs, int position, WrapperOptions options) throws SQLException {
         Object value = rs.getObject(position);
         return value == null ? null : value.toString();
     }
 
     @Override
-    protected void set(PreparedStatement st, String value, int index, SharedSessionContractImplementor session) throws SQLException {
+    protected void set(PreparedStatement st, String value, int index, WrapperOptions options) throws SQLException {
         st.setObject(index, value, Types.OTHER);
     }
 

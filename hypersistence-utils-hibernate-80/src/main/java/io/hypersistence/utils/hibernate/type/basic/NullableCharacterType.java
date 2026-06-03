@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.ImmutableType;
 import io.hypersistence.utils.hibernate.type.util.Configuration;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,14 +37,14 @@ public class NullableCharacterType extends ImmutableType<Character> {
 
     @Override
     public Character get(ResultSet rs, int position,
-                         SharedSessionContractImplementor session, Object owner) throws SQLException {
+                         WrapperOptions options) throws SQLException {
         String value = rs.getString(position);
         return (value != null && value.length() > 0) ? value.charAt(0) : null;
     }
 
     @Override
     public void set(PreparedStatement st, Character value, int index,
-                    SharedSessionContractImplementor session) throws SQLException {
+    					 WrapperOptions options) throws SQLException {
         if (value == null) {
             st.setNull(index, Types.CHAR);
         } else {

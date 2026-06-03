@@ -4,6 +4,7 @@ import io.hypersistence.utils.hibernate.type.ImmutableType;
 import io.hypersistence.utils.hibernate.type.util.Configuration;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,8 +42,7 @@ public class OracleIntervalDayToSecondType extends ImmutableType<Duration> {
     protected Duration get(
             ResultSet rs,
             int position,
-            SharedSessionContractImplementor session,
-            Object owner) throws SQLException {
+            WrapperOptions options) throws SQLException {
         final String intervalValue = rs.getString(position);
 
         if (intervalValue == null) {
@@ -71,7 +71,7 @@ public class OracleIntervalDayToSecondType extends ImmutableType<Duration> {
     }
 
     @Override
-    protected void set(PreparedStatement st, Duration value, int index, SharedSessionContractImplementor session) throws SQLException {
+    protected void set(PreparedStatement st, Duration value, int index, WrapperOptions options) throws SQLException {
         if (value == null) {
             st.setNull(index, SQL_COLUMN_TYPE);
         } else {

@@ -5,6 +5,7 @@ import io.hypersistence.utils.hibernate.type.json.internal.JacksonUtil;
 import io.hypersistence.utils.hibernate.type.util.Configuration;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.type.descriptor.WrapperOptions;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -41,12 +42,12 @@ public class PostgreSQLHStoreType extends ImmutableType<Map> {
     }
 
     @Override
-    protected Map get(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
+    protected Map get(ResultSet rs, int position, WrapperOptions options) throws SQLException {
         return (Map) rs.getObject(position);
     }
 
     @Override
-    protected void set(PreparedStatement st, Map value, int index, SharedSessionContractImplementor session) throws SQLException {
+    protected void set(PreparedStatement st, Map value, int index, WrapperOptions options) throws SQLException {
         st.setObject(index, value);
     }
 
