@@ -11,6 +11,7 @@ import org.hibernate.metamodel.model.domain.BasicDomainType;
 import org.hibernate.type.ForeignKeyDirection;
 import org.hibernate.type.MappingContext;
 import org.hibernate.type.Type;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.IncomparableComparator;
 import org.hibernate.usertype.EnhancedUserType;
 import org.hibernate.usertype.UserType;
@@ -73,13 +74,12 @@ public abstract class ImmutableType<T> implements UserType<T>, Type, EnhancedUse
      *
      * @param rs       JDBC {@link ResultSet}
      * @param position database column position
-     * @param session  current Hibernate {@link org.hibernate.Session}
-     * @param owner    current Hibernate {@link SessionFactoryImplementor}
+     * @param options  current  WrapperOptions options {@link org.hibernate.type.descriptor.WrapperOptions}
      * @return column value
      * @throws SQLException in case of failure
      */
-    protected abstract T get(ResultSet rs, int position,
-                             SharedSessionContractImplementor session, Object owner) throws SQLException;
+    protected abstract T get(ResultSet rs, int position, WrapperOptions options) throws SQLException;
+    
 
     /**
      * Set the column value on the provided JDBC {@link PreparedStatement}.
@@ -87,23 +87,28 @@ public abstract class ImmutableType<T> implements UserType<T>, Type, EnhancedUse
      * @param st      JDBC {@link PreparedStatement}
      * @param value   database column value
      * @param index   database column index
-     * @param session current Hibernate {@link org.hibernate.Session}
+     * @param options current  WrapperOptions options {@link org.hibernate.type.descriptor.WrapperOptions}
      * @throws SQLException in case of failure
      */
-    protected abstract void set(PreparedStatement st, T value, int index,
-                                SharedSessionContractImplementor session) throws SQLException;
+    protected abstract void set(PreparedStatement st, T value, int index, WrapperOptions options) throws SQLException;
 
     /* Methods inherited from the {@link UserType} interface */
 
     @Override
-    public T nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
-        return get(rs, position, session, owner);
+    public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws SQLException {
+    	return get(rs, position, options);
     }
 
+    
+    
+    public void nullSafeSet(PreparedStatement st, T value,int index, WrapperOptions options) throws SQLException {
+    	set(st, value, index, options);
+    }
+    
     @Override
     public void nullSafeSet(PreparedStatement st, Object value, int index,
                             SharedSessionContractImplementor session) throws SQLException {
-        set(st, clazz.cast(value), index, session);
+    	set(st, clazz.cast(value), index, session);
     }
 
     @Override

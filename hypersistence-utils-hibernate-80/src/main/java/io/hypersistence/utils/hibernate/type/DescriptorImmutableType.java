@@ -7,6 +7,7 @@ import org.hibernate.metamodel.model.domain.DomainType;
 import org.hibernate.query.sqm.SqmBindableType;
 import org.hibernate.type.BindableType;
 import org.hibernate.type.BindingContext;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.JavaType;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.usertype.DynamicParameterizedType;
@@ -16,6 +17,7 @@ import org.hibernate.usertype.UserType;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Wrapper;
 import java.util.Properties;
 
 import static jakarta.persistence.metamodel.Type.PersistenceType.BASIC;
@@ -43,24 +45,24 @@ public abstract class DescriptorImmutableType<T, JDBC extends JdbcType, JAVA ext
     }
 
     @Override
-    public T nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws
+    public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws
         SQLException {
-        return jdbcTypeDescriptor.getExtractor(javaTypeDescriptor).extract(rs, position, session);
+        return jdbcTypeDescriptor.getExtractor(javaTypeDescriptor).extract(rs, position, options);
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        jdbcTypeDescriptor.getBinder(javaTypeDescriptor).bind(st, (T) value, index, session);
+    public void nullSafeSet(PreparedStatement st, T value, int index, WrapperOptions options) throws HibernateException, SQLException {
+        jdbcTypeDescriptor.getBinder(javaTypeDescriptor).bind(st, (T) value, index, options);
     }
 
     @Override
-    protected T get(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws SQLException {
-        return nullSafeGet(rs, position, session, owner);
+    protected T get(ResultSet rs, int position, WrapperOptions options) throws SQLException {
+        return nullSafeGet(rs, position, options);
     }
 
     @Override
-    protected void set(PreparedStatement st, T value, int index, SharedSessionContractImplementor session) throws SQLException {
-        nullSafeSet(st, (Object) value, index, session);
+    protected void set(PreparedStatement st, T value, int index,WrapperOptions options) throws SQLException {
+        nullSafeSet(st, (T) value, index, options);
     }
 
     @Override
