@@ -1,8 +1,10 @@
 package io.hypersistence.utils.hibernate.query;
 
-import org.hibernate.transform.ResultTransformer;
-
+import java.io.Serializable;
 import java.util.List;
+
+import org.hibernate.query.ResultListTransformer;
+import org.hibernate.query.TupleTransformer;
 
 /**
  * The {@link ListResultTransformer} simplifies the way
@@ -18,7 +20,7 @@ import java.util.List;
  * @since 2.9.0
  */
 @FunctionalInterface
-public interface ListResultTransformer extends ResultTransformer {
+public interface ListResultTransformer<T> extends TupleTransformer<T>, ResultListTransformer<T>, Serializable {
 
     /**
      * Default implementation returning the tuples list as-is.
@@ -27,7 +29,7 @@ public interface ListResultTransformer extends ResultTransformer {
      * @return tuples list
      */
     @Override
-    default List transformList(List tuples) {
+    default List<T> transformList(List<T> tuples) {
         return tuples;
     }
 }

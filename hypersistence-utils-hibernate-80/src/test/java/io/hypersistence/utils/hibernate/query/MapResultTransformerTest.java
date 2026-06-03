@@ -143,7 +143,7 @@ public class MapResultTransformerTest extends AbstractPostgreSQLIntegrationTest 
                 "group by " +
                 "   YEAR(p.createdOn)")
             .unwrap(org.hibernate.query.Query.class)
-            .setResultTransformer(
+            .setTupleTransformer(
                 new MapResultTransformer<Number, Number>()
             )
             .getSingleResult();
@@ -166,7 +166,7 @@ public class MapResultTransformerTest extends AbstractPostgreSQLIntegrationTest 
                 "group by " +
                 "   YEAR(p.createdOn)")
             .unwrap(org.hibernate.query.Query.class)
-            .setResultTransformer(
+            .setResultListTransformer(
                 new MapResultTransformer<Number, Number>()
             )
             .getSingleResult();

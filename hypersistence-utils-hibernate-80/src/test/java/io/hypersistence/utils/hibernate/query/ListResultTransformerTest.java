@@ -1,17 +1,18 @@
 package io.hypersistence.utils.hibernate.query;
 
+import static org.junit.Assert.assertEquals;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import org.hibernate.query.TupleTransformer;
+import org.junit.Test;
+
 import io.hypersistence.utils.hibernate.util.AbstractPostgreSQLIntegrationTest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.hibernate.transform.ResultTransformer;
-import org.junit.Test;
-
-import java.time.LocalDate;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
 
 /**
  * @author Vlad Mihalcea
@@ -108,19 +109,14 @@ public class ListResultTransformerTest extends AbstractPostgreSQLIntegrationTest
                 "order by " +
                 "   YEAR(p.createdOn)")
             .unwrap(org.hibernate.query.Query.class)
-            .setResultTransformer(
-                new ResultTransformer() {
+            .setTupleTransformer(
+                new TupleTransformer() {
                     @Override
                     public Object transformTuple(Object[] tuple, String[] aliases) {
                         return new PostCountByYear(
                             ((Number) tuple[0]).intValue(),
                             ((Number) tuple[1]).intValue()
                         );
-                    }
-
-                    @Override
-                    public List transformList(List tuples) {
-                        return tuples;
                     }
                 }
             )
@@ -151,7 +147,7 @@ public class ListResultTransformerTest extends AbstractPostgreSQLIntegrationTest
                     "order by " +
                     "   YEAR(p.createdOn)")
                 .unwrap(org.hibernate.query.Query.class)
-                .setResultTransformer(
+                .setTupleTransformer(
                     (ListResultTransformer) (tuple, aliases) -> new PostCountByYear(
                         ((Number) tuple[0]).intValue(),
                         ((Number) tuple[1]).intValue()

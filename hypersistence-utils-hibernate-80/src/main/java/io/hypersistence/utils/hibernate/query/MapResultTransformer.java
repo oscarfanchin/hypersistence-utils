@@ -1,12 +1,14 @@
 package io.hypersistence.utils.hibernate.query;
 
-import org.hibernate.HibernateException;
-import org.hibernate.transform.ResultTransformer;
-
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.hibernate.HibernateException;
+import org.hibernate.query.ResultListTransformer;
+import org.hibernate.query.TupleTransformer;
 
 /**
  * The {@link MapResultTransformer} allows us to return
@@ -22,7 +24,7 @@ import java.util.Map;
  * @author Vlad Mihalcea
  * @since 2.9.0
  */
-public class MapResultTransformer<K, V> implements ResultTransformer {
+public class MapResultTransformer<K, V> implements TupleTransformer, ResultListTransformer, Serializable {
 
     public static final String KEY_ALIAS = "map_key";
 
@@ -82,6 +84,7 @@ public class MapResultTransformer<K, V> implements ResultTransformer {
         return tuple;
     }
 
+ 
     /**
      * Return the {@link Map} instead of the default {@link List}.
      *

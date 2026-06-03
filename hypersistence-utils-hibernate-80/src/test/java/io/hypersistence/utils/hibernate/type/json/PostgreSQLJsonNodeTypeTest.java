@@ -152,7 +152,7 @@ public class PostgreSQLJsonNodeTypeTest extends AbstractPostgreSQLIntegrationTes
             .setParameter("id", 0)
             .unwrap(NativeQuery.class)
             .addScalar("properties", JsonNodeUtil.SCALAR_JSON_NODE_TYPE)
-            .setResultTransformer(new AliasToBeanResultTransformer<BookDTO>(BookDTO.class))
+            .setTupleTransformer(new AliasToBeanResultTransformer<BookDTO>(BookDTO.class))
             .getResultList();
 
             assertEquals(1, books.size());
