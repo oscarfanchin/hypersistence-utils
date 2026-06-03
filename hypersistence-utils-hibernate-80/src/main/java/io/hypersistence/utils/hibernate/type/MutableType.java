@@ -1,9 +1,10 @@
 package io.hypersistence.utils.hibernate.type;
 
-import io.hypersistence.utils.hibernate.type.json.internal.JdbcTypeSetter;
-import io.hypersistence.utils.hibernate.type.util.Configuration;
-import io.hypersistence.utils.common.ReflectionUtils;
-import org.hibernate.HibernateException;
+import java.io.Serializable;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.internal.util.IndexedConsumer;
 import org.hibernate.metamodel.mapping.BasicValuedMapping;
@@ -13,15 +14,15 @@ import org.hibernate.metamodel.model.domain.DomainType;
 import org.hibernate.query.sqm.SqmBindableType;
 import org.hibernate.type.BindableType;
 import org.hibernate.type.BindingContext;
+import org.hibernate.type.descriptor.WrapperOptions;
 import org.hibernate.type.descriptor.java.JavaType;
 import org.hibernate.type.descriptor.jdbc.JdbcType;
 import org.hibernate.type.internal.BasicTypeImpl;
 import org.hibernate.usertype.UserType;
 
-import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import io.hypersistence.utils.common.ReflectionUtils;
+import io.hypersistence.utils.hibernate.type.json.internal.JdbcTypeSetter;
+import io.hypersistence.utils.hibernate.type.util.Configuration;
 
 /**
  * Very convenient base class for implementing mutable object types using Hibernate {@link UserType}.
@@ -96,14 +97,14 @@ public abstract class MutableType<T, JDBC extends JdbcType, JAVA extends JavaTyp
     }
 
     @Override
-    public T nullSafeGet(ResultSet rs, int position, SharedSessionContractImplementor session, Object owner) throws
+    public T nullSafeGet(ResultSet rs, int position, WrapperOptions options) throws
         SQLException {
-        return jdbcTypeDescriptor.getExtractor(javaTypeDescriptor).extract(rs, position, session);
+        return jdbcTypeDescriptor.getExtractor(javaTypeDescriptor).extract(rs, position, options.getSession());
     }
 
     @Override
-    public void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
-        jdbcTypeDescriptor.getBinder(javaTypeDescriptor).bind(st, (T) value, index, session);
+    public void nullSafeSet(PreparedStatement st, T value, int position, WrapperOptions options) throws SQLException {
+        jdbcTypeDescriptor.getBinder(javaTypeDescriptor).bind(st, (T) value, position, options.getSession());
     }
 
     @Override
