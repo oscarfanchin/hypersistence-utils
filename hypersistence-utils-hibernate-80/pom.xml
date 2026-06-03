@@ -201,6 +201,19 @@
             <scope>test</scope>
         </dependency>
 
+        <!--
+		    Required by the current Hibernate ORM 8.0 alpha / snapshot-based test setup.
+		    This dependency was added while experimenting with Hibernate 8 support and
+		    should be re-verified once a stable final release is available, since it may
+		    turn out to be needed only for tests or not needed at all.
+		-->
+		<dependency>
+			<groupId>jakarta.annotation</groupId>
+			<artifactId>jakarta.annotation-api</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+
     </dependencies>
 
     <build>
