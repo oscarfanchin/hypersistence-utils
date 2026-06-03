@@ -267,10 +267,10 @@ public abstract class ImmutableType<T> implements UserType<T>, Type, EnhancedUse
         return assemble(cached, session);
     }
 
-    @Override
-    public void beforeAssemble(Serializable cached, SharedSessionContractImplementor session) {
-
-    }
+//    @Override
+//    public void beforeAssemble(Serializable cached, SharedSessionContractImplementor session) {
+//
+//    }
 
     @Override
     public Object replace(Object original, Object target, SharedSessionContractImplementor session, Object owner, Map copyCache) throws HibernateException {
