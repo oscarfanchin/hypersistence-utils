@@ -1,14 +1,19 @@
 package io.hypersistence.utils.hibernate.query;
 
-import io.hypersistence.utils.hibernate.util.AbstractPostgreSQLIntegrationTest;
-import jakarta.persistence.*;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
+import io.hypersistence.utils.hibernate.util.AbstractPostgreSQLIntegrationTest;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Tuple;
 
 /**
  * @author Vlad Mihalcea
@@ -129,11 +134,12 @@ public class MapResultTransformerTest extends AbstractPostgreSQLIntegrationTest 
             assertEquals(1, postCountByYearMap.get(2019).intValue());
         });
     }
-
+    @SuppressWarnings({"unchecked","removal"})
     @Test
     public void testMapResultTransformerImplicitAlias() {
         doInJPA(entityManager -> {
-            Map<Number, Number> postCountByYearMap = (Map<Number, Number>) entityManager
+        	var mapper=new MapResultTransformer<>();
+			Map<Number, Number> postCountByYearMap = (Map<Number, Number>) entityManager
             .createQuery(
                 "select " +
                 "   YEAR(p.createdOn) as year, " +
@@ -144,8 +150,10 @@ public class MapResultTransformerTest extends AbstractPostgreSQLIntegrationTest 
                 "   YEAR(p.createdOn)")
             .unwrap(org.hibernate.query.Query.class)
             .setTupleTransformer(
-                new MapResultTransformer<Number, Number>()
+               mapper
             )
+            .setResultListTransformer(
+					mapper)
             .getSingleResult();
 
             assertEquals(2, postCountByYearMap.get(2016).intValue());
@@ -154,10 +162,14 @@ public class MapResultTransformerTest extends AbstractPostgreSQLIntegrationTest 
         });
     }
 
-    @Test
+    @SuppressWarnings({"unchecked","removal"})
+	@Test
     public void testMapResultTransformerExplicitAlias() {
         doInJPA(entityManager -> {
-            Map<Number, Number> postCountByYearMap = (Map<Number, Number>) entityManager
+        	
+        	var mapper=new MapResultTransformer<>();
+        	
+			Map<Number, Number> postCountByYearMap = (Map<Number, Number>) entityManager
             .createQuery(
                 "select " +
                 "   count(p) as map_value, " +
@@ -166,9 +178,10 @@ public class MapResultTransformerTest extends AbstractPostgreSQLIntegrationTest 
                 "group by " +
                 "   YEAR(p.createdOn)")
             .unwrap(org.hibernate.query.Query.class)
+            .setTupleTransformer(mapper)
             .setResultListTransformer(
-                new MapResultTransformer<Number, Number>()
-            )
+            		mapper
+			)
             .getSingleResult();
 
             assertEquals(2, postCountByYearMap.get(2016).intValue());
