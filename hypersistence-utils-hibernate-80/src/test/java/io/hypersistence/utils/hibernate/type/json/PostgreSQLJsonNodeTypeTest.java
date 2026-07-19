@@ -13,7 +13,6 @@ import org.hibernate.boot.spi.MetadataBuilderContributor;
 import org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl;
 import org.hibernate.jpa.boot.spi.TypeContributorList;
 import org.hibernate.query.NativeQuery;
-import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -138,29 +137,29 @@ public class PostgreSQLJsonNodeTypeTest extends AbstractPostgreSQLIntegrationTes
         assertEquals(book.getIsbn(), _book.getIsbn());
     }
 
-    @Ignore("TODO PROBLEM WITH setResultTransformer")
-    @Test
-    public void testNativeQueryResultTransformer() {
-        doInJPA(entityManager -> {
-            @SuppressWarnings({ "unchecked", "deprecation" })
-						List<BookDTO> books = entityManager.createNativeQuery(
-                "SELECT " +
-                "       b.id as id, " +
-                "       b.properties as properties " +
-                "FROM book b " +
-                "WHERE b.id >= :id")
-            .setParameter("id", 0)
-            .unwrap(NativeQuery.class)
-            .addScalar("properties", JsonNodeUtil.SCALAR_JSON_NODE_TYPE)
-            .setTupleTransformer(new AliasToBeanResultTransformer<BookDTO>(BookDTO.class))
-            .getResultList();
-
-            assertEquals(1, books.size());
-            BookDTO book = books.get(0);
-
-            assertEquals(expectedPrice(), book.getProperties().get("price").asText());
-        });
-    }
+//    @Ignore("TODO PROBLEM WITH setResultTransformer")
+//    @Test
+//    public void testNativeQueryResultTransformer() {
+//        doInJPA(entityManager -> {
+//            @SuppressWarnings({ "unchecked", "deprecation" })
+//						List<BookDTO> books = entityManager.createNativeQuery(
+//                "SELECT " +
+//                "       b.id as id, " +
+//                "       b.properties as properties " +
+//                "FROM book b " +
+//                "WHERE b.id >= :id")
+//            .setParameter("id", 0)
+//            .unwrap(NativeQuery.class)
+//            .addScalar("properties", JsonNodeUtil.SCALAR_JSON_NODE_TYPE)
+//            .setTupleTransformer(new AliasToBeanResultTransformer<BookDTO>(BookDTO.class))
+//            .getResultList();
+//
+//            assertEquals(1, books.size());
+//            BookDTO book = books.get(0);
+//
+//            assertEquals(expectedPrice(), book.getProperties().get("price").asText());
+//        });
+//    }
 
     @Test
     @Ignore("TODO: H6")
