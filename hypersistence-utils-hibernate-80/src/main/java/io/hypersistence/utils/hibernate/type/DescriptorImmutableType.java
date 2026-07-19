@@ -4,7 +4,7 @@ import io.hypersistence.utils.hibernate.type.util.Configuration;
 import org.hibernate.HibernateException;
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.metamodel.model.domain.DomainType;
-import org.hibernate.query.sqm.SqmBindableType;
+import org.hibernate.query.sqm.spi.SqmBindableType;
 import org.hibernate.type.BindableType;
 import org.hibernate.type.BindingContext;
 import org.hibernate.type.descriptor.WrapperOptions;

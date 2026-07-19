@@ -11,7 +11,7 @@ import org.hibernate.metamodel.mapping.BasicValuedMapping;
 import org.hibernate.metamodel.mapping.JdbcMapping;
 import org.hibernate.metamodel.mapping.MappingType;
 import org.hibernate.metamodel.model.domain.DomainType;
-import org.hibernate.query.sqm.SqmBindableType;
+import org.hibernate.query.sqm.spi.SqmBindableType;
 import org.hibernate.type.BindableType;
 import org.hibernate.type.BindingContext;
 import org.hibernate.type.descriptor.WrapperOptions;
