@@ -478,7 +478,7 @@ The few Maven plugin settings that Jenesis does not read from the `pom.xml` file
 On Windows, the following scripts wrap the commands below and run Jenesis with the JDK from `JAVA_HOME_25` when that variable is set:
 
 - `build-with-jenesis.bat` builds and tests all modules.
-- `build-module-with-jenesis.bat 73` builds and tests a single module, given by its Hibernate version: `63`, `71`, or `73`.
+- `build-module-with-jenesis.bat 73` builds and tests a single module, given by its Hibernate version: `63`, `71`, `73`, or `80`.
 - `build-without-tests-with-jenesis.bat` builds all modules without tests and installs the jars into the local Maven repository.
 
 To build and test all modules:

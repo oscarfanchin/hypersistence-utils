@@ -15,4 +15,4 @@ if defined JAVA_HOME_25 set JAVA="%JAVA_HOME_25%\bin\java"
 goto:eof
 
 :usage
-echo Usage: %0 63^|71^|73
+echo Usage: %0 63^|71^|73^|80

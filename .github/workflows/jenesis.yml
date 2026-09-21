@@ -17,7 +17,7 @@ jobs:
       # One job per module: each module's tests start their own database
       # containers, so running all three at once on one runner would triple them.
       matrix:
-        hibernate: [ '73', '71', '63' ]
+        hibernate: [ '80', '73', '71', '63' ]
     steps:
       - uses: actions/checkout@v5
 
